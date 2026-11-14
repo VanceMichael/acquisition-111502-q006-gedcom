@@ -1,0 +1,16 @@
+{
+  "/files/family.ged": {
+    "file": "family.ged",
+    "mediaType": "application/octet-stream",
+    "partialFile": "family.ged.partial"
+  },
+  "/files/sources.ged": {
+    "file": "sources.ged",
+    "mediaType": "application/octet-stream",
+    "availableAt": "complete"
+  },
+  "/deliveries": {
+    "file": "delivery.json",
+    "mediaType": "application/json"
+  }
+}

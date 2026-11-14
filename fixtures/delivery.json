@@ -1,0 +1,22 @@
+{
+  "deliveryId": "delivery-1",
+  "revision": "r1",
+  "roots": [
+    {
+      "href": "/files/family.ged"
+    },
+    {
+      "href": "/files/sources.ged"
+    }
+  ],
+  "resources": [
+    {
+      "href": "/files/family.ged",
+      "name": "family.ged"
+    },
+    {
+      "href": "/files/sources.ged",
+      "name": "sources.ged"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "kind": "person",
+    "value": {
+      "pointer": "@I1@"
+    }
+  },
+  {
+    "kind": "person",
+    "value": {
+      "pointer": "@I2@"
+    }
+  },
+  {
+    "kind": "relationship",
+    "value": {
+      "child": "@I1@",
+      "family": "@F1@",
+      "pedigree": "FOSTER"
+    }
+  },
+  {
+    "kind": "event-date",
+    "value": {
+      "raw": "BET 1900 AND 1902",
+      "precision": "range"
+    }
+  }
+]
