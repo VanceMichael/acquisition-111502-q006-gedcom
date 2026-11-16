@@ -2,6 +2,7 @@ import { createServer } from 'node:http';
 import { Archive } from './archive.mjs';
 import { retrieve } from './transport.mjs';
 import { summarize } from './summary.mjs';
+import { acquire } from './acquisition.mjs';
 
 export function json(response, status, value) {
   response.writeHead(status, { 'content-type': 'application/json; charset=utf-8' });
@@ -53,10 +54,17 @@ export async function createService({ directory, allowedOrigin }) {
       if (request.method === 'POST' && url.pathname === '/acquisitions') {
         const body = await requestBody(request);
         if (typeof body.entry !== 'string') throw Object.assign(new Error('missing_entry'), { status: 400 });
-        const result = await retrieve(body.entry, allowedOrigin);
-        const receipt = await archive.receive({ collectionId: body.collectionId, sourceKey: body.entry, revision: result.revision,
-          mediaType: result.mediaType, bytes: result.bytes, summary: summarize(result.bytes, result.mediaType) });
-        return json(response, 201, { collectionId: body.collectionId, receiptIds: [receipt.receiptId] });
+        if (typeof body.collectionId !== 'string' || !body.collectionId) {
+          throw Object.assign(new Error('missing_collection'), { status: 400 });
+        }
+        // 结构化自动接入：索引与全部资源均经同源校验领取，并保留真实原文收件。
+        const result = await acquire({
+          entry: body.entry,
+          allowedOrigin,
+          archive,
+          collectionId: body.collectionId
+        });
+        return json(response, 201, result);
       }
       return json(response, 404, { error: 'not_found' });
     } catch (error) {
