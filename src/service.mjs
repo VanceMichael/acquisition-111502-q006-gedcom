@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { Archive } from './archive.mjs';
-import { retrieve } from './transport.mjs';
 import { summarize } from './summary.mjs';
+import { acquire } from './acquisition.mjs';
 
 export function json(response, status, value) {
   response.writeHead(status, { 'content-type': 'application/json; charset=utf-8' });
@@ -35,6 +35,8 @@ export async function createService({ directory, allowedOrigin }) {
       if (collection && request.method === 'GET') return json(response, 200, await archive.collection(collection[1]));
       const records = url.pathname.match(/^\/collections\/([a-zA-Z0-9_.-]+)\/records$/);
       if (records && request.method === 'POST') return json(response, 201, await archive.addRecord(records[1], await requestBody(request)));
+      const identities = url.pathname.match(/^\/collections\/([a-zA-Z0-9_.-]+)\/identities$/);
+      if (identities && request.method === 'POST') return json(response, 201, await archive.addIdentity(identities[1], await requestBody(request)));
       const blob = url.pathname.match(/^\/receipts\/([a-f0-9]{64})\/body$/);
       if (blob && request.method === 'GET') {
         const receipt = await archive.receipt(blob[1]);
@@ -53,10 +55,9 @@ export async function createService({ directory, allowedOrigin }) {
       if (request.method === 'POST' && url.pathname === '/acquisitions') {
         const body = await requestBody(request);
         if (typeof body.entry !== 'string') throw Object.assign(new Error('missing_entry'), { status: 400 });
-        const result = await retrieve(body.entry, allowedOrigin);
-        const receipt = await archive.receive({ collectionId: body.collectionId, sourceKey: body.entry, revision: result.revision,
-          mediaType: result.mediaType, bytes: result.bytes, summary: summarize(result.bytes, result.mediaType) });
-        return json(response, 201, { collectionId: body.collectionId, receiptIds: [receipt.receiptId] });
+        const result = await acquire({ archive, collectionId: body.collectionId, entry: body.entry, options: body.options || {}, allowedOrigin });
+        const collection = await archive.addInterpretation(body.collectionId, result);
+        return json(response, 201, { collectionId: body.collectionId, deliveryId: result.deliveryId, receiptIds: result.receiptIds, issues: collection.issues.length });
       }
       return json(response, 404, { error: 'not_found' });
     } catch (error) {

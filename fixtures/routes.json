@@ -9,8 +9,24 @@
     "mediaType": "application/octet-stream",
     "availableAt": "complete"
   },
+  "/files/mixed.ged": {
+    "file": "mixed.ged",
+    "mediaType": "application/octet-stream"
+  },
+  "/files/sources-late.ged": {
+    "file": "sources.ged",
+    "mediaType": "application/octet-stream"
+  },
   "/deliveries": {
     "file": "delivery.json",
     "mediaType": "application/json"
+  },
+  "/second-delivery": {
+    "file": "second-delivery.json",
+    "mediaType": "application/json"
+  },
+  "/files/second-family.ged": {
+    "file": "second-family.ged",
+    "mediaType": "application/octet-stream"
   }
 }

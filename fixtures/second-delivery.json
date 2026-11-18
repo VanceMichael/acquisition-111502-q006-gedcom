@@ -1,0 +1,15 @@
+{
+  "deliveryId": "delivery-2",
+  "revision": "r1",
+  "roots": [
+    {
+      "href": "/files/second-family.ged"
+    }
+  ],
+  "resources": [
+    {
+      "href": "/files/second-family.ged",
+      "name": "second-family.ged"
+    }
+  ]
+}

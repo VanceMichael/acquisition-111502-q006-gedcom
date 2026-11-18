@@ -1,0 +1,22 @@
+0 HEAD
+1 GEDC
+2 VERS 7.0
+0 @I9@ INDI
+1 NAME Lin /Chen
+2 GIVN Lin
+1 BIRT
+2 DATE ABT 1888
+1 FAMC @F9@
+2 NOTE foster-placed
+1 _CUSTOM keep-me
+2 CONC tail
+1 NOTE first
+2 CONC -joined
+0 @I9@ INDI
+1 NAME duplicate declaration
+0 @N1@ NOTE shared note text
+1 CONT second line
+0 @F9@ FAM
+1 CHIL @I9@
+1 NOTE @N1@
+0 TRLR
